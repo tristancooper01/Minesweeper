@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8" />
+
+</head>
+
+<body>
+
+<h1 >Minesweeper</h1>
+
+
+
+
+
+<button type="button" id="button">Click Me!</button>
+
+<button type="button" id="button2" onclick="myFunction2()">Click Me2!</button>
+
+These are just here for testing
+
+<br></br>
+
+Rows: <input id="rows" value="10"></input>
+
+<br></br>
+
+Columns: <input id="columns" value="10"></input>
+
+<br></br>
+
+Mines: <input id="Mines" value="10"></input>
+
+<br></br>
+
+<button type="button" id="startbutton">Start</button>
+
+<br></br>
+
+Remaining Safe Squares to clear: <b id = "remaining">90</b>
+
+<br></br>
+
+Mines minus Flags: <b id = "remainingmines">10</b>
+
+<br></br>
+
+Timer: <div style="font-size: 30px;", id = "timer">0</div>
+
+<br></br>
+
+<canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;">
+</canvas>
+
+<br></br>
+
+Left click to reveal squares, Right click to flag or chord.
+
+
+<script src="things.js"></script>
+
+</body>
+</html>
