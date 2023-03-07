@@ -17,7 +17,7 @@ function Cell(a, b) {
 	this.row = b;
 	this.x = a * 30;
 	this.y = b * 30;
-	this.neighborCount = -1;
+	this.neighborCount = 0;
 	this.mine = false;
 	this.revealed = false;
 	this.flagged = false;
@@ -37,10 +37,13 @@ var gameOn = true;
 
 var firstclick = true;
 
+var mines = 10;
+
 var ctx = canvas.getContext("2d");
 ctx.fillStyle = "#808080";
 
-startGame();
+reset();
+
 
 var seconds = 0;
 
@@ -106,15 +109,16 @@ function flag(e) {
 
 function clicksquare(e) {
 	if(gameOn){
-		if(firstclick == true){
-			firstclick = false;
-		}
 		var x = e.pageX;
 		var y = e.pageY;
 		i = Math.floor((x-left)/30);
 		j = Math.floor((y-recttop)/30);
 		document.getElementById("button").innerHTML = left;//test
 		document.getElementById("button2").innerHTML = recttop;//test
+		if(firstclick == true){
+			firstclick = false;
+			startGame2(i,j);
+		}
 		if(grid[i][j].revealed == false && grid[i][j].flagged == false){
 			//grid[i][j].revealed = true;
 			reveal(i,j);
@@ -170,11 +174,11 @@ function myFunction2() {//test
 }
 
 
-startbutton.addEventListener("click", startGame, false);
+startbutton.addEventListener("click", reset, false);
 
-function startGame(e){
-	gameOn = true;
+function reset(e){
 	firstclick = true;
+	gameOn = true;
 	seconds = 0;
 	document.getElementById("timer").innerHTML = seconds;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -182,33 +186,36 @@ function startGame(e){
 	canvas.width = columns * 30;
 	rows = document.getElementById("rows").value;
 	canvas.height = rows * 30;
-	var mines = document.getElementById("Mines").value;
+	mines = document.getElementById("Mines").value;
 	document.getElementById("remaining").innerHTML = rows*columns - mines;
 	document.getElementById("remainingmines").innerHTML = mines;
+	var cells = columns * rows;
+	grid = make2DArray(columns,rows);
+	ctx.font = "25px serif";
+	for(var i = 0; i <rows; i++){
+		for(var j=0; j<columns; j++){
+			ctx.strokeRect(30*j, 30*i, 30, 30);
+			grid[j][i] = new Cell(j,i);
+			cells -= 1;
+		}
+	}
+}
+
+function startGame2(a,b){
 	var cells = columns * rows;
 	var random =0;
 	recttop = canvas.getBoundingClientRect().top+window.scrollY;
 	left = canvas.getBoundingClientRect().left+window.scrollX;
-	grid = make2DArray(columns,rows);
 	for(var i = 0; i <rows; i++){
 		for(var j=0; j<columns; j++){
 			ctx.strokeRect(30*j, 30*i, 30, 30);
 			grid[j][i] = new Cell(j,i);
 			random = Math.floor(Math.random()*cells);
-			if(random < mines){
-				ctx.fillStyle = "#FF0000";
-				//ctx.fillRect(j*30, i*30, 29, 29);
-				ctx.fillStyle = "#000000";
-				ctx.font = "25px serif";
-				//ctx.fillText(mines, j*30+8, i*30+25,22);
+			if(random < mines && (a != j || b != i)){
 				mines -= 1;
 				grid[j][i].mine = true;
 			}
 			cells -= 1;
-			if(grid[j][i].mine == false){
-				ctx.fillStyle = "#000000";
-				ctx.font = "25px serif";
-			}
 		}
 	}
 	var count = 0;
@@ -224,10 +231,7 @@ function startGame(e){
 						}
 					}
 				}
-				ctx.fillStyle = "#000000";
-				ctx.font = "25px serif";
 				grid[j][i].neighborCount = count;
-				//ctx.fillText(grid[j][i].neighborCount, j*30+8, i*30+25);
 				count = 0;
 			}
 		}
@@ -235,6 +239,4 @@ function startGame(e){
 
   
 }
-
-
 
