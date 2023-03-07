@@ -134,7 +134,7 @@ function reveal(x,y){
 		if(gameOn){
 			document.getElementById("remaining").innerHTML -= 1;
 		}
-		if(document.getElementById("remaining").innerHTML == 0){
+		if(document.getElementById("remaining").innerHTML <= 0){
 			document.getElementById("remaining").innerHTML = "You Won!";
 			document.getElementById("remainingmines").innerHTML = 0;
 			for(var i = 0; i < rows; i++){
@@ -169,9 +169,7 @@ function reveal(x,y){
 	}
 }
 
-function myFunction2() {//test
-	document.getElementById("button2").innerHTML = 0;
-}
+
 
 
 startbutton.addEventListener("click", reset, false);
@@ -187,35 +185,35 @@ function reset(e){
 	rows = document.getElementById("rows").value;
 	canvas.height = rows * 30;
 	mines = document.getElementById("Mines").value;
-	document.getElementById("remaining").innerHTML = rows*columns - mines;
-	document.getElementById("remainingmines").innerHTML = mines;
-	var cells = columns * rows;
+	document.getElementById("remaining").innerHTML = Math.max(rows*columns - mines, 1);
+	document.getElementById("remainingmines").innerHTML = Math.min(mines, rows*columns - 1);
 	grid = make2DArray(columns,rows);
 	ctx.font = "25px serif";
 	for(var i = 0; i <rows; i++){
 		for(var j=0; j<columns; j++){
 			ctx.strokeRect(30*j, 30*i, 30, 30);
 			grid[j][i] = new Cell(j,i);
-			cells -= 1;
 		}
 	}
 }
 
 function startGame2(a,b){
-	var cells = columns * rows;
+	var cells = columns * rows - 1;
 	var random =0;
 	recttop = canvas.getBoundingClientRect().top+window.scrollY;
 	left = canvas.getBoundingClientRect().left+window.scrollX;
 	for(var i = 0; i <rows; i++){
 		for(var j=0; j<columns; j++){
 			ctx.strokeRect(30*j, 30*i, 30, 30);
-			grid[j][i] = new Cell(j,i);
+			//grid[j][i] = new Cell(j,i);
 			random = Math.floor(Math.random()*cells);
 			if(random < mines && (a != j || b != i)){
 				mines -= 1;
 				grid[j][i].mine = true;
 			}
-			cells -= 1;
+			if(a!= j || b != i){
+				cells -= 1;
+			}
 		}
 	}
 	var count = 0;
