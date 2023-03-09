@@ -37,6 +37,10 @@ var gameOn = true;
 
 var firstclick = true;
 
+var coloring = false;
+
+var currentcolor = "#000000";
+
 var mines = 10;
 
 var ctx = canvas.getContext("2d");
@@ -236,5 +240,14 @@ function startGame2(a,b){
 	}
 
   
+}
+
+function pressStop(){
+	coloring = false;
+}
+
+function pressRed(){
+	coloring = true;
+	document.getElementById("button").innerHTML = "#FF0000";
 }
 
