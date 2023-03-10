@@ -78,8 +78,10 @@ function flag(e) {
 			if(grid[i][j].flagged == false){
 				grid[i][j].flagged = true;
 				document.getElementById("remainingmines").innerHTML -= 1;
-				ctx.fillStyle = "#00FF00";
-				ctx.fillRect(30*i+5, 30*j+5, 20, 20);
+				//ctx.fillStyle = "#00FF00";
+				//ctx.fillRect(30*i+5, 30*j+5, 20, 20);
+				let img = document.getElementById("flag");//testing
+				ctx.drawImage(img,30*i+1,30*j+1);
 			}
 			else{
 				grid[i][j].flagged = false;
@@ -164,8 +166,8 @@ function reveal(x,y){
 				for(let j = 0; j < columns; j++){
 					if(grid[j][i].mine == true && grid[j][i].flagged == false){
 						grid[j][i].flagged = true;
-						ctx.fillStyle = "#00FF00";
-						ctx.fillRect(30*j+5, 30*i+5, 20, 20);
+						let img = document.getElementById("flag");//testing
+						ctx.drawImage(img,30*j+1,30*i+1);
 					}
 				}
 			}
