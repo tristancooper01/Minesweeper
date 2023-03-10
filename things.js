@@ -6,7 +6,7 @@ var canvas = document.getElementById("myCanvas");
 
 function make2DArray(cols, rows) {
 	var arr = new Array(cols);
-	for (var i = 0; i < cols; i++) {
+	for (let i = 0; i < cols; i++) {
 		arr[i] = new Array(rows);
 	}
 	return arr;
@@ -68,10 +68,10 @@ canvas.addEventListener("contextmenu", flag, false);
 
 function flag(e) {
 	if(gameOn && !coloring){
-		var x = e.pageX;
-		var y = e.pageY;
-		i = Math.floor((x-left)/30);
-		j = Math.floor((y-recttop)/30);
+		let x = e.pageX;
+		let y = e.pageY;
+		let i = Math.floor((x-left)/30);
+		let j = Math.floor((y-recttop)/30);
 		document.getElementById("button").innerHTML = i;//test
 		document.getElementById("button2").innerHTML = j;//test
 		if(grid[i][j].revealed == false){
@@ -84,22 +84,22 @@ function flag(e) {
 			else{
 				grid[i][j].flagged = false;
 				document.getElementById("remainingmines").innerHTML = (+document.getElementById("remainingmines").innerHTML)+1;
-				ctx.fillStyle = "#FFFFFF";
+				ctx.fillStyle = "#808080";
 				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			}
 		}
 		else{
-			var neighborflags = 0;
-			for(var a = -1; a <= 1; a++){
-				for(var b = -1; b <= 1; b++){
+			let neighborflags = 0;
+			for(let a = -1; a <= 1; a++){
+				for(let b = -1; b <= 1; b++){
 					if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && grid[i+a][j+b].flagged == true){
 						neighborflags += 1;
 					}
 				}
 			}
 			if(neighborflags == grid[i][j].neighborCount){
-				for(var a = -1; a <= 1; a++){
-					for(var b = -1; b <= 1; b++){
+				for(let a = -1; a <= 1; a++){
+					for(let b = -1; b <= 1; b++){
 						if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && grid[i+a][j+b].revealed == false && grid[i+a][j+b].flagged == false){
 							//grid[i+a][j+b].revealed = true;
 							reveal(i+a,j+b);
@@ -137,8 +137,8 @@ function clicksquare(e) {
 			}
 			else{
 				grid[i][j].colored = false;
-				ctx.fillStyle = "#FFFFFF";
-				ctx.fillRect(30*i+2, 30*j+2, 26, 26);
+				ctx.fillStyle = "#808080";
+				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			}
 		}
 		
@@ -148,8 +148,12 @@ function clicksquare(e) {
 function reveal(x,y){
 	grid[x][y].revealed = true;
 	if(grid[x][y].mine == false){
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fillRect(30*x+1,30*y+1,28,28);
 		ctx.fillStyle = "#000000";
-		ctx.fillText(grid[x][y].neighborCount, x*30+8, y*30+25);
+		if(grid[x][y].neighborCount != 0){
+			ctx.fillText(grid[x][y].neighborCount, x*30+8, y*30+25);
+		}
 		if(gameOn){
 			document.getElementById("remaining").innerHTML -= 1;
 		}
@@ -211,6 +215,8 @@ function reset(e){
 	for(let i = 0; i <rows; i++){
 		for(let j=0; j<columns; j++){
 			ctx.strokeRect(30*j, 30*i, 30, 30);
+			ctx.fillStyle = "#808080";
+			ctx.fillRect(30*j+1, 30*i+1, 28, 28);
 			grid[j][i] = new Cell(j,i);
 		}
 	}
@@ -235,12 +241,12 @@ function startGame2(a,b){
 		}
 	}
 	let count = 0;
-	for(var i = 0; i <rows; i++){
-		for(var j=0; j<columns; j++){
+	for(let i = 0; i <rows; i++){
+		for(let j=0; j<columns; j++){
 			if(grid[j][i].mine == false){
-				for(var a = -1; a <= 1; a++){
+				for(let a = -1; a <= 1; a++){
 					if(a+j>=0 && a+j<columns){
-						for(var b = -1; b<= 1; b++){
+						for(let b = -1; b<= 1; b++){
 							if(b+i>=0 && b+i<rows && grid[a+j][b+i].mine == true){
 								count += 1;
 							}
