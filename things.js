@@ -21,6 +21,7 @@ function Cell(a, b) {
 	this.mine = false;
 	this.revealed = false;
 	this.flagged = false;
+	this.colored = false;
 }
 
 var grid = make2DArray(10,10);
@@ -66,7 +67,7 @@ canvas.addEventListener("contextmenu", (e) => {e.preventDefault()});
 canvas.addEventListener("contextmenu", flag, false);
 
 function flag(e) {
-	if(gameOn){
+	if(gameOn && !coloring){
 		var x = e.pageX;
 		var y = e.pageY;
 		i = Math.floor((x-left)/30);
@@ -112,11 +113,11 @@ function flag(e) {
 
 
 function clicksquare(e) {
-	if(gameOn){
-		var x = e.pageX;
-		var y = e.pageY;
-		i = Math.floor((x-left)/30);
-		j = Math.floor((y-recttop)/30);
+	let x = e.pageX;
+	let y = e.pageY;
+	let i = Math.floor((x-left)/30);
+	let j = Math.floor((y-recttop)/30);
+	if(gameOn && !coloring){
 		document.getElementById("button").innerHTML = left;//test
 		document.getElementById("button2").innerHTML = recttop;//test
 		if(firstclick == true){
@@ -124,9 +125,23 @@ function clicksquare(e) {
 			startGame2(i,j);
 		}
 		if(grid[i][j].revealed == false && grid[i][j].flagged == false){
-			//grid[i][j].revealed = true;
 			reveal(i,j);
 		}
+	}
+	else if(gameOn && coloring){
+		if(!grid[i][j].revealed && !grid[i][j].flagged){
+			if(!grid[i][j].colored){
+				grid[i][j].colored = true;
+				ctx.fillStyle = currentcolor;
+				ctx.fillRect(30*i+2, 30*j+2, 26, 26);
+			}
+			else{
+				grid[i][j].colored = false;
+				ctx.fillStyle = "#FFFFFF";
+				ctx.fillRect(30*i+2, 30*j+2, 26, 26);
+			}
+		}
+		
 	}
 }
 
@@ -141,8 +156,8 @@ function reveal(x,y){
 		if(document.getElementById("remaining").innerHTML <= 0){
 			document.getElementById("remaining").innerHTML = "You Won!";
 			document.getElementById("remainingmines").innerHTML = 0;
-			for(var i = 0; i < rows; i++){
-				for(var j = 0; j < columns; j++){
+			for(let i = 0; i < rows; i++){
+				for(let j = 0; j < columns; j++){
 					if(grid[j][i].mine == true && grid[j][i].flagged == false){
 						grid[j][i].flagged = true;
 						ctx.fillStyle = "#00FF00";
@@ -153,8 +168,8 @@ function reveal(x,y){
 			gameOn = false;
 		}
 		if(grid[x][y].neighborCount == 0){
-			for(var c = -1; c < 2; c++){
-				for(var d = -1; d < 2; d++){
+			for(let c = -1; c < 2; c++){
+				for(let d = -1; d < 2; d++){
 					if(c+x >= 0 && c+x < columns && d+y >= 0 && d+y < rows){
 						if(grid[c+x][d+y].revealed == false){
 							grid[c+x][d+y].revealed = true;
@@ -193,8 +208,8 @@ function reset(e){
 	document.getElementById("remainingmines").innerHTML = Math.min(mines, rows*columns - 1);
 	grid = make2DArray(columns,rows);
 	ctx.font = "25px serif";
-	for(var i = 0; i <rows; i++){
-		for(var j=0; j<columns; j++){
+	for(let i = 0; i <rows; i++){
+		for(let j=0; j<columns; j++){
 			ctx.strokeRect(30*j, 30*i, 30, 30);
 			grid[j][i] = new Cell(j,i);
 		}
@@ -202,14 +217,13 @@ function reset(e){
 }
 
 function startGame2(a,b){
-	var cells = columns * rows - 1;
-	var random =0;
+	let cells = columns * rows - 1;
+	let random =0;
 	recttop = canvas.getBoundingClientRect().top+window.scrollY;
 	left = canvas.getBoundingClientRect().left+window.scrollX;
-	for(var i = 0; i <rows; i++){
-		for(var j=0; j<columns; j++){
+	for(let i = 0; i <rows; i++){
+		for(let j=0; j<columns; j++){
 			ctx.strokeRect(30*j, 30*i, 30, 30);
-			//grid[j][i] = new Cell(j,i);
 			random = Math.floor(Math.random()*cells);
 			if(random < mines && (a != j || b != i)){
 				mines -= 1;
@@ -220,7 +234,7 @@ function startGame2(a,b){
 			}
 		}
 	}
-	var count = 0;
+	let count = 0;
 	for(var i = 0; i <rows; i++){
 		for(var j=0; j<columns; j++){
 			if(grid[j][i].mine == false){
@@ -249,5 +263,20 @@ function pressStop(){
 function pressRed(){
 	coloring = true;
 	document.getElementById("button").innerHTML = "#FF0000";
+	currentcolor = "#FF0000";
+}
+
+
+function pressGreen(){
+	coloring = true;
+	document.getElementById("button").innerHTML = "#00FF00";
+	currentcolor = "#00FF00";
+}
+
+
+function pressBlue(){
+	coloring = true;
+	document.getElementById("button").innerHTML = "#0000FF";
+	currentcolor = "#0000FF";
 }
 
