@@ -78,9 +78,7 @@ function flag(e) {
 			if(grid[i][j].flagged == false){
 				grid[i][j].flagged = true;
 				document.getElementById("remainingmines").innerHTML -= 1;
-				//ctx.fillStyle = "#00FF00";
-				//ctx.fillRect(30*i+5, 30*j+5, 20, 20);
-				let img = document.getElementById("flag");//testing
+				let img = document.getElementById("flag");
 				ctx.drawImage(img,30*i+1,30*j+1);
 			}
 			else{
@@ -187,8 +185,20 @@ function reveal(x,y){
 		}
 	}
 	else{
-		ctx.fillStyle = "#FF0000";
-		ctx.fillRect(x*30, y*30, 29, 29);
+		for(let i = 0; i < columns; i++){
+			for(let j = 0; j < rows; j++){
+				if(grid[i][j].mine && !grid[i][j].flagged){
+					let img2 = document.getElementById("mine");
+					ctx.drawImage(img2,30*i+1,30*j+1);
+				}
+				else if(grid[i][j].flagged && !grid[i][j].mine){
+					let img3 = document.getElementById("wrongflag");
+					ctx.drawImage(img3,30*i+1,30*j+1);
+				}
+			}
+		}
+		let img = document.getElementById("minered");
+		ctx.drawImage(img,30*x+1,30*y+1);
 		gameOn = false;
 		document.getElementById("remaining").innerHTML = "You Lost!";
 	}
@@ -202,6 +212,7 @@ startbutton.addEventListener("click", reset, false);
 function reset(e){
 	firstclick = true;
 	gameOn = true;
+	coloring = false;
 	seconds = 0;
 	document.getElementById("timer").innerHTML = seconds;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
