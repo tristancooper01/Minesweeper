@@ -1,8 +1,5 @@
 var canvas = document.getElementById("myCanvas");
 
-//canvas.style.top = '350px';//figure out another way?
-
-//canvas.style.left = '30px';
 
 function make2DArray(cols, rows) {
 	var arr = new Array(cols);
