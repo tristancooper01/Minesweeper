@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8" />
+
+</head>
+
+<body>
+
+<h1 >Minesweeper</h1>
+
+
+
+<button type="button" id="button">Click Me!</button>
+
+<button type="button" id="button2">Click Me2!</button>
+
+These are just here for testing
+
+<br></br>
+
+Rows: <input id="rows" value="10"></input>
+
+<br></br>
+
+Columns: <input id="columns" value="10"></input>
+
+<br></br>
+
+Mines: <input id="Mines" value="10"></input>
+
+<br></br>
+
+<button type="button" id="startbutton">Start</button>
+
+<br></br>
+
+Remaining Safe Squares to clear: <b id = "remaining">90</b>
+
+<br></br>
+
+Mines minus Flags: <b id = "remainingmines">10</b>
+
+<br></br>
+
+Timer: <div style="font-size: 30px;", id = "timer">0</div>
+
+<br></br>
+
+<canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;">
+</canvas>
+
+<br></br>
+
+Left click to reveal squares, Right click to flag or chord.
+
+<br></br>
+
+<button type="button" id="stopcolorbutton" onclick = "pressStop()">Stop coloring</button>
+
+<button type="button" id="redbutton" style="background-color:#FF0000;" onclick = "pressRed()">Red</button>
+
+<button type="button" id="greenbutton" style="background-color:#00FF00;" onclick = "pressGreen()">Green</button>
+
+<button type="button" id="bluebutton" style="background-color:blue;" onclick = "pressBlue()">Blue</button>
+
+
+<script src="minesweepercode.js"></script>
+
+<br></br>
+
+Tutorial: The grid is hidden, some squares have mines <img id="mine" width="30" height="30" src="mine.png">. 
+Your goal is to reveal all squares except for squares with mines. If you reveal a mine, you lose<img id="minered" width="30" height="30" src="minered.png">. Revealed squares tell you how many mines are in the 8 adjacent squares.
+You can place a flag<img id="flag" width="30" height="30" src="flag.png"> on a square you know has a mine, which stops you from accidentally clicking on it.
+If you place a flag on a square with no mine, and then lose, this<img id="wrongflag" width="30" height="30" src="wrongflag.png"> will show that your flag was misplaced.
+
+</body>
+</html>
