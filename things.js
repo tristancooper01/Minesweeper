@@ -138,6 +138,21 @@ function clicksquare(e) {
 				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			}
 		}
+		else if(!grid[i][j].flagged){
+			if(!grid[i][j].colored){
+				ctx.strokeStyle = currentcolor;
+				grid[i][j].colored = true;
+				ctx.strokeRect(30*i+4, 30*j+4, 22, 24);
+			}
+			else{
+				grid[i][j].colored = false;
+				ctx.fillStyle = "#FFFFFF";
+				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+				ctx.fillStyle = "#000000";
+				ctx.fillText(grid[i][j].neighborCount, i*30+8, j*30+25);
+			}
+			
+		}
 		
 	}
 }
@@ -224,6 +239,7 @@ function reset(e){
 	ctx.font = "25px serif";
 	for(let i = 0; i <rows; i++){
 		for(let j=0; j<columns; j++){
+			ctx.strokeStyle = "#000000";
 			ctx.strokeRect(30*j, 30*i, 30, 30);
 			ctx.fillStyle = "#808080";
 			ctx.fillRect(30*j+1, 30*i+1, 28, 28);
@@ -239,7 +255,8 @@ function startGame2(a,b){
 	left = canvas.getBoundingClientRect().left+window.scrollX;
 	for(let i = 0; i <rows; i++){
 		for(let j=0; j<columns; j++){
-			ctx.strokeRect(30*j, 30*i, 30, 30);
+			//ctx.strokeStyle = "#000000";
+			//ctx.strokeRect(30*j, 30*i, 30, 30);
 			random = Math.floor(Math.random()*cells);
 			if(random < mines && (a != j || b != i)){
 				mines -= 1;
