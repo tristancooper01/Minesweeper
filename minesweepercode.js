@@ -167,7 +167,10 @@ function color(i,j){
 			ctx.fillStyle = "#FFFFFF";
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			ctx.fillStyle = "#000000";
-			ctx.fillText(grid[i][j].neighborCount, i*30+8, j*30+25);
+            if(grid[i][j].neighborCount > 0){
+                ctx.fillText(grid[i][j].neighborCount, i*30+8, j*30+25);
+            }
+			
 		}
 		
 	}
@@ -326,3 +329,12 @@ function pressBlue(){
 	currentcolor = "#0000FF";
 }
 
+function pressClear(){
+    for(let i = 0; i < columns; i++){
+        for(let j = 0; j < rows; j++){
+            if(grid[i][j].colored){
+                color(i,j);
+            }
+        }
+    }
+}

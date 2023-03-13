@@ -48,17 +48,23 @@ Timer: <div style="font-size: 30px;", id = "timer">0</div>
 
 <br></br>
 
-Left click to reveal squares, Right click to flag or chord.
+Left click to reveal squares, Right click to flag or chord. 
+You can color the non-flagged squares. To do so, click on a color button, then left clicking will color them. Right clicking a revealed square will color it and all adjacent hidden non-flagged squares.
+
 
 <br></br>
 
-<button type="button" id="stopcolorbutton" onclick = "pressStop()">Stop coloring</button>
+Color squares:
 
 <button type="button" id="redbutton" style="background-color:#FF0000;" onclick = "pressRed()">Red</button>
 
 <button type="button" id="greenbutton" style="background-color:#00FF00;" onclick = "pressGreen()">Green</button>
 
 <button type="button" id="bluebutton" style="background-color:blue;" onclick = "pressBlue()">Blue</button>
+
+<button type="button" id="clearcolorbutton" onclick = "pressClear()">Clear colors</button>
+
+<button type="button" id="stopcolorbutton" onclick = "pressStop()">Stop coloring</button>
 
 
 <script src="minesweepercode.js"></script>
