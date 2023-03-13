@@ -310,23 +310,31 @@ function startGame(a,b){
 
 function pressStop(){
 	coloring = false;
+    document.getElementById("showcurrentcolor").innerHTML = "None";
+    document.getElementById("showcurrentcolor").style.color = "black";
 }
 
 function pressRed(){
 	coloring = true;
 	currentcolor = "#FF0000";
+    document.getElementById("showcurrentcolor").innerHTML = "Red";
+    document.getElementById("showcurrentcolor").style.color = "red";
 }
 
 
 function pressGreen(){
 	coloring = true;
 	currentcolor = "#00FF00";
+    document.getElementById("showcurrentcolor").innerHTML = "Green";
+    document.getElementById("showcurrentcolor").style.color = "green";
 }
 
 
 function pressBlue(){
 	coloring = true;
 	currentcolor = "#0000FF";
+    document.getElementById("showcurrentcolor").innerHTML = "Blue";
+    document.getElementById("showcurrentcolor").style.color = "blue";
 }
 
 function pressClear(){

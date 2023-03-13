@@ -46,10 +46,7 @@ Timer: <div style="font-size: 30px;", id = "timer">0</div>
 <canvas id="myCanvas" width="300" height="300" style="border:1px solid #000000;">
 </canvas>
 
-<br></br>
 
-Left click to reveal squares, Right click to flag or chord. 
-You can color the non-flagged squares. To do so, click on a color button, then left clicking will color them. Right clicking a revealed square will color it and all adjacent hidden non-flagged squares.
 
 
 <br></br>
@@ -66,8 +63,17 @@ Color squares:
 
 <button type="button" id="stopcolorbutton" onclick = "pressStop()">Stop coloring</button>
 
+<br></br>
+
+Current Color: <b id = "showcurrentcolor">None</b>
+
 
 <script src="minesweepercode.js"></script>
+
+<br></br>
+
+Controls: Left click to reveal squares, Right click to flag or chord. 
+You can color the non-flagged squares. To do so, click on a color button, then left clicking will color them. Right clicking a revealed square will color it and all adjacent hidden non-flagged squares.
 
 <br></br>
 
