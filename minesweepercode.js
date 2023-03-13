@@ -76,6 +76,16 @@ function rightclick(e) {
 			chord(i,j);
 		}
 	}
+    else if(gameOn && grid[i][j].revealed){
+        color(i,j);
+        for(let a = -1; a <= 1; a++){
+            for(let b = -1; b <= 1; b++){
+                if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && !grid[i+a][j+b].revealed){
+                    color(i+a,b+j);
+                }
+            }
+        }
+    }
 }
 
 function flag(i,j){
@@ -301,21 +311,18 @@ function pressStop(){
 
 function pressRed(){
 	coloring = true;
-	document.getElementById("button").innerHTML = "#FF0000";
 	currentcolor = "#FF0000";
 }
 
 
 function pressGreen(){
 	coloring = true;
-	document.getElementById("button").innerHTML = "#00FF00";
 	currentcolor = "#00FF00";
 }
 
 
 function pressBlue(){
 	coloring = true;
-	document.getElementById("button").innerHTML = "#0000FF";
 	currentcolor = "#0000FF";
 }
 
