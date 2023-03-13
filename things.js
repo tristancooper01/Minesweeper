@@ -57,51 +57,56 @@ setInterval(function() {
 
 
 
-canvas.addEventListener("click", clicksquare, false);
+canvas.addEventListener("click", leftclick, false);
 
 canvas.addEventListener("contextmenu", (e) => {e.preventDefault()});
 
-canvas.addEventListener("contextmenu", flag, false);
+canvas.addEventListener("contextmenu", rightclick, false);
 
-function flag(e) {
+function rightclick(e) {
+	let x = e.pageX;
+	let y = e.pageY;
+	let i = Math.floor((x-left)/30);
+	let j = Math.floor((y-recttop)/30);
 	if(gameOn && !coloring){
-		let x = e.pageX;
-		let y = e.pageY;
-		let i = Math.floor((x-left)/30);
-		let j = Math.floor((y-recttop)/30);
-		document.getElementById("button").innerHTML = i;//test
-		document.getElementById("button2").innerHTML = j;//test
 		if(grid[i][j].revealed == false){
-			if(grid[i][j].flagged == false){
-				grid[i][j].flagged = true;
-				document.getElementById("remainingmines").innerHTML -= 1;
-				let img = document.getElementById("flag");
-				ctx.drawImage(img,30*i+1,30*j+1);
-			}
-			else{
-				grid[i][j].flagged = false;
-				document.getElementById("remainingmines").innerHTML = (+document.getElementById("remainingmines").innerHTML)+1;
-				ctx.fillStyle = "#808080";
-				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
-			}
+			flag(i,j);
 		}
 		else{
-			let neighborflags = 0;
-			for(let a = -1; a <= 1; a++){
-				for(let b = -1; b <= 1; b++){
-					if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && grid[i+a][j+b].flagged == true){
-						neighborflags += 1;
-					}
-				}
+			chord(i,j);
+		}
+	}
+}
+
+function flag(i,j){
+	if(grid[i][j].flagged == false){
+		grid[i][j].flagged = true;
+		document.getElementById("remainingmines").innerHTML -= 1;
+		let img = document.getElementById("flag");
+		ctx.drawImage(img,30*i+1,30*j+1);
+	}
+	else{
+		grid[i][j].flagged = false;
+		document.getElementById("remainingmines").innerHTML = (+document.getElementById("remainingmines").innerHTML)+1;
+		ctx.fillStyle = "#808080";
+		ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+	}
+}
+
+function chord(i,j){
+	let neighborflags = 0;
+	for(let a = -1; a <= 1; a++){
+		for(let b = -1; b <= 1; b++){
+			if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && grid[i+a][j+b].flagged == true){
+				neighborflags += 1;
 			}
-			if(neighborflags == grid[i][j].neighborCount){
-				for(let a = -1; a <= 1; a++){
-					for(let b = -1; b <= 1; b++){
-						if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && grid[i+a][j+b].revealed == false && grid[i+a][j+b].flagged == false){
-							//grid[i+a][j+b].revealed = true;
-							reveal(i+a,j+b);
-						}
-					}
+		}
+	}
+	if(neighborflags == grid[i][j].neighborCount){
+		for(let a = -1; a <= 1; a++){
+			for(let b = -1; b <= 1; b++){
+				if(i+a >= 0 && i+a < columns && j+b >= 0 && j+b < rows && grid[i+a][j+b].revealed == false && grid[i+a][j+b].flagged == false){
+					reveal(i+a,j+b);
 				}
 			}
 		}
@@ -109,49 +114,50 @@ function flag(e) {
 }
 
 
-function clicksquare(e) {
+function leftclick(e) {
 	let x = e.pageX;
 	let y = e.pageY;
 	let i = Math.floor((x-left)/30);
 	let j = Math.floor((y-recttop)/30);
 	if(gameOn && !coloring){
-		document.getElementById("button").innerHTML = left;//test
-		document.getElementById("button2").innerHTML = recttop;//test
 		if(firstclick == true){
 			firstclick = false;
-			startGame2(i,j);
+			startGame(i,j);
 		}
 		if(grid[i][j].revealed == false && grid[i][j].flagged == false){
 			reveal(i,j);
 		}
 	}
-	else if(gameOn && coloring){
-		if(!grid[i][j].revealed && !grid[i][j].flagged){
-			if(!grid[i][j].colored){
-				grid[i][j].colored = true;
-				ctx.fillStyle = currentcolor;
-				ctx.fillRect(30*i+2, 30*j+2, 26, 26);
-			}
-			else{
-				grid[i][j].colored = false;
-				ctx.fillStyle = "#808080";
-				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
-			}
+	else if(gameOn && coloring){//split into other function;
+		color(i,j);
+	}
+}
+
+function color(i,j){
+	if(!grid[i][j].revealed && !grid[i][j].flagged){
+		if(!grid[i][j].colored){
+			grid[i][j].colored = true;
+			ctx.fillStyle = currentcolor;
+			ctx.fillRect(30*i+2, 30*j+2, 26, 26);
 		}
-		else if(!grid[i][j].flagged){
-			if(!grid[i][j].colored){
-				ctx.strokeStyle = currentcolor;
-				grid[i][j].colored = true;
-				ctx.strokeRect(30*i+4, 30*j+4, 22, 24);
-			}
-			else{
-				grid[i][j].colored = false;
-				ctx.fillStyle = "#FFFFFF";
-				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
-				ctx.fillStyle = "#000000";
-				ctx.fillText(grid[i][j].neighborCount, i*30+8, j*30+25);
-			}
-			
+		else{
+			grid[i][j].colored = false;
+			ctx.fillStyle = "#808080";
+			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+		}
+	}
+	else if(!grid[i][j].flagged){
+		if(!grid[i][j].colored){
+			ctx.strokeStyle = currentcolor;
+			grid[i][j].colored = true;
+			ctx.strokeRect(30*i+4, 30*j+4, 22, 24);
+		}
+		else{
+			grid[i][j].colored = false;
+			ctx.fillStyle = "#FFFFFF";
+			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+			ctx.fillStyle = "#000000";
+			ctx.fillText(grid[i][j].neighborCount, i*30+8, j*30+25);
 		}
 		
 	}
@@ -248,7 +254,7 @@ function reset(e){
 	}
 }
 
-function startGame2(a,b){
+function startGame(a,b){
 	let cells = columns * rows - 1;
 	let random =0;
 	recttop = canvas.getBoundingClientRect().top+window.scrollY;
