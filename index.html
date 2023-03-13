@@ -12,16 +12,6 @@
 
 <h1 >Minesweeper</h1>
 
-<img id="flag" width="30" height="30" src="flag.png">
-
-<img id="wrongflag" width="30" height="30" src="wrongflag.png">
-
-<img id="mine" width="30" height="30" src="mine.png">
-
-<img id="minered" width="30" height="30" src="minered.png">
-
-
-
 
 
 <button type="button" id="button">Click Me!</button>
@@ -79,6 +69,13 @@ Left click to reveal squares, Right click to flag or chord.
 
 
 <script src="things.js"></script>
+
+<br></br>
+
+Tutorial: The grid is hidden, some squares have mines <img id="mine" width="30" height="30" src="mine.png">. 
+Your goal is to reveal all squares except for squares with mines. If you reveal a mine, you lose<img id="minered" width="30" height="30" src="minered.png">. Revealed squares tell you how many mines are in the 8 adjacent squares.
+You can place a flag<img id="flag" width="30" height="30" src="flag.png"> on a square you know has a mine, which stops you from accidentally clicking on it.
+If you place a flag on a square with no mine, and then lose, this<img id="wrongflag" width="30" height="30" src="wrongflag.png"> will show that your flag was misplaced.
 
 </body>
 </html>
