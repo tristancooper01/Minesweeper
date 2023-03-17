@@ -171,10 +171,12 @@ function color(i,j){
 		if(grid[i][j].colored == 0){
 			ctx.strokeStyle = currentcolor;
 			grid[i][j].colored = 2;
+			grid[i][j].colorcode = currentcolorcode;
 			ctx.strokeRect(30*i+4, 30*j+4, 22, 24);
 		}
 		else{
 			grid[i][j].colored = 0;
+			grid[i][j].colorcode = 0;
 			ctx.fillStyle = "#FFFFFF";
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			ctx.fillStyle = "#000000";
