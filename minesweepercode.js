@@ -18,7 +18,8 @@ function Cell(a, b) {
 	this.mine = false;
 	this.revealed = false;
 	this.flagged = false;
-	this.colored = false;
+	this.colored = 0;
+	this.colorcode = 0;
 }
 
 var grid = make2DArray(10,10);
@@ -38,6 +39,8 @@ var firstclick = true;
 var coloring = false;
 
 var currentcolor = "#000000";
+
+var currentcolorcode = 0;
 
 var mines = 10;
 
@@ -145,25 +148,33 @@ function leftclick(e) {
 
 function color(i,j){
 	if(!grid[i][j].revealed && !grid[i][j].flagged){
-		if(!grid[i][j].colored){
-			grid[i][j].colored = true;
+		if(grid[i][j].colored == 0){
+			grid[i][j].colored = 1;
+			grid[i][j].colorcode += currentcolorcode;
 			ctx.fillStyle = currentcolor;
 			ctx.fillRect(30*i+2, 30*j+2, 26, 26);
 		}
+		else if(grid[i][j].colored == 1 && currentcolorcode != grid[i][j].colorcode){
+			grid[i][j].colored = 2;
+			grid[i][j].colorcode += 3*currentcolorcode;
+			ctx.fillStyle = currentcolor;
+			ctx.fillRect(30*i+15, 30*j+2, 13, 26);
+		}
 		else{
-			grid[i][j].colored = false;
+			grid[i][j].colored = 0;
+			grid[i][j].colorcode = 0;
 			ctx.fillStyle = "#808080";
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 		}
 	}
 	else if(!grid[i][j].flagged){
-		if(!grid[i][j].colored){
+		if(grid[i][j].colored == 0){
 			ctx.strokeStyle = currentcolor;
-			grid[i][j].colored = true;
+			grid[i][j].colored = 2;
 			ctx.strokeRect(30*i+4, 30*j+4, 22, 24);
 		}
 		else{
-			grid[i][j].colored = false;
+			grid[i][j].colored = 0;
 			ctx.fillStyle = "#FFFFFF";
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			ctx.fillStyle = "#000000";
@@ -317,6 +328,7 @@ function pressStop(){
 function pressRed(){
 	coloring = true;
 	currentcolor = "#FF0000";
+	currentcolorcode = 0;
     document.getElementById("showcurrentcolor").innerHTML = "Red";
     document.getElementById("showcurrentcolor").style.color = "red";
 }
@@ -325,6 +337,7 @@ function pressRed(){
 function pressGreen(){
 	coloring = true;
 	currentcolor = "#00FF00";
+	currentcolorcode = 1;
     document.getElementById("showcurrentcolor").innerHTML = "Green";
     document.getElementById("showcurrentcolor").style.color = "green";
 }
@@ -333,6 +346,7 @@ function pressGreen(){
 function pressBlue(){
 	coloring = true;
 	currentcolor = "#0000FF";
+	currentcolorcode = 2;
     document.getElementById("showcurrentcolor").innerHTML = "Blue";
     document.getElementById("showcurrentcolor").style.color = "blue";
 }
@@ -340,7 +354,10 @@ function pressBlue(){
 function pressClear(){
     for(let i = 0; i < columns; i++){
         for(let j = 0; j < rows; j++){
-            if(grid[i][j].colored){
+            if(grid[i][j].colored == 1){
+                color(i,j);
+            }
+			if(grid[i][j].colored == 2){
                 color(i,j);
             }
         }
