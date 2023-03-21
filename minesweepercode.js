@@ -191,6 +191,8 @@ function color(i,j){
 
 function reveal(x,y){
 	grid[x][y].revealed = true;
+	grid[x][y].colored = 0;
+	grid[x][y].colorcode = 0;
 	if(grid[x][y].mine == false){
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(30*x+1,30*y+1,28,28);
