@@ -134,7 +134,14 @@ function leftclick(e) {
 	let y = e.pageY;
 	let i = Math.floor((x-left)/30);
 	let j = Math.floor((y-recttop)/30);
-	if(gameOn && !coloring){
+	if(gameOn && typing){
+		grid[i][j].revealed = true;
+		ctx.fillStyle = "#FFFFFF";
+		ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+		ctx.fillStyle = "#000000";
+		ctx.fillText(document.getElementById("showcurrentkey").innerHTML, i*30+8, j*30+25);
+	}
+	else if(gameOn && !coloring){
 		if(firstclick == true){
 			firstclick = false;
 			startGame(i,j);
