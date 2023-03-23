@@ -42,6 +42,8 @@ var currentcolor = "#000000";
 
 var currentcolorcode = 0;
 
+var typing = false;
+
 var mines = 10;
 
 var ctx = canvas.getContext("2d");
@@ -141,7 +143,7 @@ function leftclick(e) {
 			reveal(i,j);
 		}
 	}
-	else if(gameOn && coloring){//split into other function;
+	else if(gameOn && coloring){
 		color(i,j);
 	}
 }
@@ -331,6 +333,9 @@ function pressStop(){
 
 function pressRed(){
 	coloring = true;
+	if(typing){
+		pressType();
+	}
 	currentcolor = "#FF0000";
 	currentcolorcode = 0;
     document.getElementById("showcurrentcolor").innerHTML = "Red";
@@ -340,6 +345,9 @@ function pressRed(){
 
 function pressGreen(){
 	coloring = true;
+	if(typing){
+		pressType();
+	}
 	currentcolor = "#00FF00";
 	currentcolorcode = 1;
     document.getElementById("showcurrentcolor").innerHTML = "Green";
@@ -349,6 +357,9 @@ function pressGreen(){
 
 function pressBlue(){
 	coloring = true;
+	if(typing){
+		pressType();
+	}
 	currentcolor = "#0000FF";
 	currentcolorcode = 2;
     document.getElementById("showcurrentcolor").innerHTML = "Blue";
@@ -366,4 +377,25 @@ function pressClear(){
             }
         }
     }
+}
+
+
+window.addEventListener("keydown",changekey,false);
+
+function changekey(e){
+	if(typing){
+		document.getElementById("showcurrentkey").innerHTML = e.key;
+	}
+}
+
+function pressType(){
+	if(typing){
+		typing = false;
+		document.getElementById("showtextmode").innerHTML = "No";
+	}
+	else{
+		typing = true;
+		document.getElementById("showtextmode").innerHTML = "Yes";
+		pressStop();
+	}
 }
