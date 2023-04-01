@@ -18,8 +18,7 @@ function Cell(a, b) {
 	this.mine = false;
 	this.revealed = false;
 	this.flagged = false;
-	this.colored = 0;
-	this.colorcode = 0;
+	this.colors = ["#808080","#808080"];//Modify everywhere previously using .colored
 }
 
 var grid = make2DArray(10,10);
@@ -40,7 +39,6 @@ var coloring = false;
 
 var currentcolor = "#000000";
 
-var currentcolorcode = 0;
 
 var typing = false;
 
@@ -157,35 +155,42 @@ function leftclick(e) {
 
 function color(i,j){
 	if(!grid[i][j].revealed && !grid[i][j].flagged){
-		if(grid[i][j].colored == 0){
-			grid[i][j].colored = 1;
-			grid[i][j].colorcode += currentcolorcode;
+		if(grid[i][j].colors[0] == "#808080"){
+			grid[i][j].colors[0] = currentcolor;
+			grid[i][j].colors[1] = currentcolor;
 			ctx.fillStyle = currentcolor;
 			ctx.fillRect(30*i+2, 30*j+2, 26, 26);
 		}
-		else if(grid[i][j].colored == 1 && currentcolorcode != grid[i][j].colorcode){
-			grid[i][j].colored = 2;
-			grid[i][j].colorcode += 3*currentcolorcode;
-			ctx.fillStyle = currentcolor;
+		else if(grid[i][j].colors[0] != currentcolor && grid[i][j].colors[1] == currentcolor){
+			grid[i][j].colors[1] = grid[i][j].colors[0];
+			ctx.fillStyle = grid[i][j].colors[1];
 			ctx.fillRect(30*i+15, 30*j+2, 13, 26);
 		}
-		else{
-			grid[i][j].colored = 0;
-			grid[i][j].colorcode = 0;
+		else if(grid[i][j].colors[0] == currentcolor && grid[i][j].colors[1] != currentcolor){
+			grid[i][j].colors[0] = grid[i][j].colors[1];
+			ctx.fillStyle = grid[i][j].colors[0];
+			ctx.fillRect(30*i+2, 30*j+2, 13, 26);
+		}
+		else if(grid[i][j].colors[0] == currentcolor && grid[i][j].colors[1] == currentcolor){
+			grid[i][j].colors[0] = "#808080";
+			grid[i][j].colors[1] = "#808080";
 			ctx.fillStyle = "#808080";
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 		}
+		else{
+			grid[i][j].colors[1] = currentcolor;
+			ctx.fillStyle = currentcolor;
+			ctx.fillRect(30*i+15, 30*j+2, 13, 26);
+		}
 	}
 	else if(!grid[i][j].flagged){
-		if(grid[i][j].colored == 0){
+		if(grid[i][j].colors[0] == "#808080"){
 			ctx.strokeStyle = currentcolor;
-			grid[i][j].colored = 2;
-			grid[i][j].colorcode = currentcolorcode;
+			grid[i][j].colors[0] = currentcolor;
 			ctx.strokeRect(30*i+4, 30*j+4, 22, 24);
 		}
 		else{
-			grid[i][j].colored = 0;
-			grid[i][j].colorcode = 0;
+			grid[i][j].colors[0] = "#808080";
 			ctx.fillStyle = "#FFFFFF";
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			ctx.fillStyle = "#000000";
@@ -200,8 +205,8 @@ function color(i,j){
 
 function reveal(x,y){
 	grid[x][y].revealed = true;
-	grid[x][y].colored = 0;
-	grid[x][y].colorcode = 0;
+	grid[x][y].colors[0] = "#808080";
+	grid[x][y].colors[1] = "#808080";
 	if(grid[x][y].mine == false){
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(30*x+1,30*y+1,28,28);
@@ -215,6 +220,7 @@ function reveal(x,y){
 		if(document.getElementById("remaining").innerHTML <= 0){
 			document.getElementById("remaining").innerHTML = "You Won!";
 			document.getElementById("remainingmines").innerHTML = 0;
+			pressClear();
 			for(let i = 0; i < rows; i++){
 				for(let j = 0; j < columns; j++){
 					if(grid[j][i].mine == true && grid[j][i].flagged == false){
@@ -344,7 +350,6 @@ function pressRed(){
 		pressType();
 	}
 	currentcolor = "#FF0000";
-	currentcolorcode = 0;
     document.getElementById("showcurrentcolor").innerHTML = "Red";
     document.getElementById("showcurrentcolor").style.color = "red";
 }
@@ -356,7 +361,6 @@ function pressGreen(){
 		pressType();
 	}
 	currentcolor = "#00FF00";
-	currentcolorcode = 1;
     document.getElementById("showcurrentcolor").innerHTML = "Green";
     document.getElementById("showcurrentcolor").style.color = "green";
 }
@@ -368,7 +372,6 @@ function pressBlue(){
 		pressType();
 	}
 	currentcolor = "#0000FF";
-	currentcolorcode = 2;
     document.getElementById("showcurrentcolor").innerHTML = "Blue";
     document.getElementById("showcurrentcolor").style.color = "blue";
 }
@@ -376,12 +379,16 @@ function pressBlue(){
 function pressClear(){
     for(let i = 0; i < columns; i++){
         for(let j = 0; j < rows; j++){
-            if(grid[i][j].colored == 1){
-                color(i,j);
-            }
-			if(grid[i][j].colored == 2){
-                color(i,j);
-            }
+			if(!grid[i][j].revealed & !grid[i][j].flagged){
+				grid[i][j].colors[0] = "#808080";
+				grid[i][j].colors[0] = "#808080";
+				ctx.fillStyle = "#808080"
+				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+			}
+			else if(grid[i][j].colors[0] != "#808080"){
+				color(i,j);
+			}
+			
         }
     }
 }
