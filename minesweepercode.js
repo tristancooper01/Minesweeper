@@ -384,7 +384,7 @@ function pressClear(){
         for(let j = 0; j < rows; j++){
 			if(!grid[i][j].revealed & !grid[i][j].flagged){
 				grid[i][j].colors[0] = "#808080";
-				grid[i][j].colors[0] = "#808080";
+				grid[i][j].colors[1] = "#808080";
 				ctx.fillStyle = "#808080"
 				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			}
