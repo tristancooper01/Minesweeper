@@ -17,6 +17,7 @@ function Cell(a, b) {
 	this.neighborCount = 0;
 	this.mine = false;
 	this.revealed = false;
+	this.fakerevealed = false;
 	this.flagged = false;
 	this.colors = ["#808080","#808080"];//Modify everywhere previously using .colored
 }
@@ -134,6 +135,7 @@ function leftclick(e) {
 	let j = Math.floor((y-recttop)/30);
 	if(gameOn && typing){
 		grid[i][j].revealed = true;
+		grid[i][j].fakerevealed = true;
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 		ctx.fillStyle = "#000000";
@@ -205,6 +207,7 @@ function color(i,j){
 
 function reveal(x,y){
 	grid[x][y].revealed = true;
+	grid[x][y].fakerevealed = false;
 	grid[x][y].colors[0] = "#808080";
 	grid[x][y].colors[1] = "#808080";
 	if(grid[x][y].mine == false){
@@ -391,6 +394,35 @@ function pressClear(){
 			
         }
     }
+}
+
+function pressReset(){
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	for(let i = 0; i <columns; i++){
+		for(let j=0; j<rows; j++){
+			ctx.strokeStyle = "#000000";
+			ctx.strokeRect(30*i, 30*j, 30, 30);
+			ctx.fillStyle = "#808080";
+			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+			if(grid[i][j].flagged){
+				let img = document.getElementById("flag");
+				ctx.drawImage(img,30*i+1,30*j+1);
+			}
+			else if(grid[i][j].revealed && !grid[i][j].fakerevealed){
+				ctx.fillStyle = "#FFFFFF";
+				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+				ctx.fillStyle = "#000000";
+            	if (grid[i][j].neighborCount > 0){
+                	ctx.fillText(grid[i][j].neighborCount, i*30+8, j*30+25);
+            	}
+			}
+			if(grid[i][j].fakerevealed){
+				grid[i][j].fakerevealed = false;
+				grid[i][j].revealed = false;
+			}
+			grid[i][j].colors = ["#808080","#808080"];
+		}
+	}
 }
 
 
