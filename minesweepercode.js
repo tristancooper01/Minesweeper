@@ -19,7 +19,7 @@ function Cell(a, b) {
 	this.revealed = false;
 	this.fakerevealed = false;
 	this.flagged = false;
-	this.colors = ["#808080","#808080"];//Modify everywhere previously using .colored
+	this.colors = ["#808080","#808080"];
 }
 
 var grid = make2DArray(10,10);
@@ -97,7 +97,7 @@ function flag(i,j){
 		grid[i][j].flagged = true;
 		document.getElementById("remainingmines").innerHTML -= 1;
 		let img = document.getElementById("flag");
-		ctx.drawImage(img,30*i+1,30*j+1);
+		ctx.drawImage(img,30*i+8,30*j+6);
 	}
 	else{
 		grid[i][j].flagged = false;
@@ -228,8 +228,8 @@ function reveal(x,y){
 				for(let j = 0; j < columns; j++){
 					if(grid[j][i].mine == true && grid[j][i].flagged == false){
 						grid[j][i].flagged = true;
-						let img = document.getElementById("flag");//testing
-						ctx.drawImage(img,30*j+1,30*i+1);
+						let img = document.getElementById("flag");
+						ctx.drawImage(img,30*j+8,30*i+6);
 					}
 				}
 			}
@@ -307,8 +307,6 @@ function startGame(a,b){
 	left = canvas.getBoundingClientRect().left+window.scrollX;
 	for(let i = 0; i <rows; i++){
 		for(let j=0; j<columns; j++){
-			//ctx.strokeStyle = "#000000";
-			//ctx.strokeRect(30*j, 30*i, 30, 30);
 			random = Math.floor(Math.random()*cells);
 			if(random < mines && (a != j || b != i)){
 				mines -= 1;
@@ -406,7 +404,7 @@ function pressReset(){
 			ctx.fillRect(30*i+1, 30*j+1, 28, 28);
 			if(grid[i][j].flagged){
 				let img = document.getElementById("flag");
-				ctx.drawImage(img,30*i+1,30*j+1);
+				ctx.drawImage(img,30*i+8,30*j+6);
 			}
 			else if(grid[i][j].revealed && !grid[i][j].fakerevealed){
 				ctx.fillStyle = "#FFFFFF";
