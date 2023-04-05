@@ -156,7 +156,7 @@ function leftclick(e) {
 }
 
 function color(i,j){
-	if(!grid[i][j].revealed && !grid[i][j].flagged){
+	if(!grid[i][j].revealed){
 		if(grid[i][j].colors[0] == "#808080"){
 			grid[i][j].colors[0] = currentcolor;
 			grid[i][j].colors[1] = currentcolor;
@@ -183,6 +183,10 @@ function color(i,j){
 			grid[i][j].colors[1] = currentcolor;
 			ctx.fillStyle = currentcolor;
 			ctx.fillRect(30*i+15, 30*j+2, 13, 26);
+		}
+		if(grid[i][j].flagged){
+			let img = document.getElementById("flag");
+			ctx.drawImage(img,30*i+8,30*j+6);
 		}
 	}
 	else if(!grid[i][j].flagged){
@@ -380,11 +384,15 @@ function pressBlue(){
 function pressClear(){
     for(let i = 0; i < columns; i++){
         for(let j = 0; j < rows; j++){
-			if(!grid[i][j].revealed & !grid[i][j].flagged){
+			if(!grid[i][j].revealed){
 				grid[i][j].colors[0] = "#808080";
 				grid[i][j].colors[1] = "#808080";
 				ctx.fillStyle = "#808080"
 				ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+				if(grid[i][j].flagged){
+					let img = document.getElementById("flag");
+					ctx.drawImage(img,30*i+8,30*j+6);
+				}
 			}
 			else if(grid[i][j].colors[0] != "#808080"){
 				color(i,j);
