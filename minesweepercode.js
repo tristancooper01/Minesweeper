@@ -134,12 +134,7 @@ function leftclick(e) {
 	let i = Math.floor((x-left)/30);
 	let j = Math.floor((y-recttop)/30);
 	if(gameOn && typing){
-		grid[i][j].revealed = true;
-		grid[i][j].fakerevealed = true;
-		ctx.fillStyle = "#FFFFFF";
-		ctx.fillRect(30*i+1, 30*j+1, 28, 28);
-		ctx.fillStyle = "#000000";
-		ctx.fillText(document.getElementById("showcurrentkey").innerHTML, i*30+8, j*30+25);
+		type(i,j);
 	}
 	else if(gameOn && !coloring){
 		if(firstclick == true){
@@ -153,6 +148,15 @@ function leftclick(e) {
 	else if(gameOn && coloring){
 		color(i,j);
 	}
+}
+
+function type(i,j){
+	grid[i][j].revealed = true;
+	grid[i][j].fakerevealed = true;
+	ctx.fillStyle = "#FFFFFF";
+	ctx.fillRect(30*i+1, 30*j+1, 28, 28);
+	ctx.fillStyle = "#000000";
+	ctx.fillText(document.getElementById("showcurrentkey").innerHTML, i*30+8, j*30+25);
 }
 
 function color(i,j){
